@@ -11,7 +11,7 @@ class batchWCTest:
         print(f"start cleaning ..")
         spark.sql("drop table if exists word_count_table")
         dbutils.fs.rm("/user/hive/warehouse/word_count_table", True)
-        dbutils.fs.rm(f"{self.base_data_dir}/checkpoint",True)
+        dbutils.fs.rm(f"{self.base_data_dir}/checkpoints",True)
         dbutils.fs.rm(f"{self.base_data_dir}/data/csv",True)
 
         dbutils.fs.mkdirs(f"{self.base_data_dir}/data/csv")

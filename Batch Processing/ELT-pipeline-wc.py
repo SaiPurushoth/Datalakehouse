@@ -12,6 +12,8 @@ class batchWC:
           .option('header', 'true')
           .load(f"{self.base_dir}/data/csv")
             )
+        
+        display(df.printSchema())
         return df.select(explode(split(df.sch_mgmt_name," ")).alias("words"))
     
     def getQualityData(self,rawDF):
@@ -41,10 +43,6 @@ class batchWC:
         print("Done")
         
 
-
-# COMMAND ----------
-
-display(spark.sql(f"select count(*) from word_count_table where substr(words,1,1)='s'"))
 
 # COMMAND ----------
 
