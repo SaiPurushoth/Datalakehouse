@@ -4,6 +4,7 @@
 
 # COMMAND ----------
 
+from enum import Enum
 class School(Enum):
     FACILITY_LOCATION = 1
     TEACHER_DETAILS = 2
@@ -13,7 +14,7 @@ class School(Enum):
 
 class LoadData:
     def __init__(self):
-        self.source_base_dir = 'file:/Workspace/Users/saipurushothg@presidio.com/Datalakehouse/school-data-analysis/source'
+        self.source_base_dir = 'file:/Workspace/Repos/saipurushothg@presidio.com/Datalakehouse/school-data-analysis/source'
         self.target_base_dir = '/FileStore/tables'
         self.folder_dict = {'facility_location':'json','teacher_details':'csv','school_enrollments':'csv','school_infra':'csv'}
 
