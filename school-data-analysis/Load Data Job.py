@@ -90,8 +90,7 @@ class LoadData:
 # COMMAND ----------
 
 if __name__ == "__main__":
-    loadObj = LoadData()
-    loadObj.copy_data_to_dbfs()
+    LoadData().copy_data_to_dbfs()
 
 # COMMAND ----------
 
