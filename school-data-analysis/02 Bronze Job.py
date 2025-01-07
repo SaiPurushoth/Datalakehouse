@@ -1,9 +1,8 @@
 # Databricks notebook source
-
-class InjestData:
+class BronzeLayerData:
     def __init__(self):
         self.base_path = '/FileStore/tables/'
-        self.checkpoint_location = '/FileStore/checkpoint/'
+        self.checkpoint_location = '/FileStore/checkpoint/bronze_layer'
 
     def cleanup_checkpoint(self):
         dbutils.fs.rm(self.checkpoint_location, True)
@@ -164,19 +163,22 @@ class InjestData:
         return (
             spark.readStream
             .format('cloudFiles')
-            .option('cloudFiles.format', 'csv')
+            .option("cloudFiles.format", "csv")
             .schema(schema)
             .option("header", True)
             .load(f'{self.base_path}/{folder_name}')
             )
         
-    def write_stream_to_delta(self, df,folder_name):
+    def write_stream_to_delta(self, df,table_name):
+        from pyspark.sql.functions import current_timestamp
         return ( 
-                df.writeStream
+                df.withColumn('ingest_date', current_timestamp())
+                .writeStream
                 .format('delta')
-                .option('checkpointLocation', f'{self.checkpoint_location}/{folder_name}')
+                .option('checkpointLocation', f'{self.checkpoint_location}/{table_name}')
                 .outputMode('append')
-                .table(folder_name)
+                .trigger(once=True)
+                .table(table_name)
             )
 
 
@@ -205,9 +207,9 @@ class InjestData:
 # COMMAND ----------
 
 if __name__ == '__main__':
-    InjestData().ingest_school_enrollment()
-    InjestData().ingest_school_infra()
-    InjestData().ingest_school_teacher()
+    BronzeLayerData().ingest_school_enrollment()
+    BronzeLayerData().ingest_school_infra()
+    BronzeLayerData().ingest_school_teacher()
 
 # COMMAND ----------
 

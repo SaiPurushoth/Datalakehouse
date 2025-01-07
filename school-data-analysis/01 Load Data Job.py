@@ -13,8 +13,8 @@ class School(Enum):
 
 
 class LoadData:
-    def __init__(self):
-        self.source_base_dir = 'file:/Workspace/Repos/saipurushothg@presidio.com/Datalakehouse/school-data-analysis/source'
+    def __init__(self,location):
+        self.source_base_dir = f'file:/Workspace/{location}/saipurushothg@presidio.com/Datalakehouse/school-data-analysis/source'
         self.target_base_dir = '/FileStore/tables'
         self.folder_dict = {'facility_location':'json','teacher_details':'csv','school_enrollments':'csv','school_infra':'csv'}
 
@@ -71,17 +71,17 @@ class LoadData:
             folder_name =  'teacher_details'
             if no_of_files == -1:
                 no_of_files = self.get_file_count(folder_name)
-                self.load_files(no_of_files,folder_name,self.folder_dict[folder_name])
+            self.load_files(no_of_files,folder_name,self.folder_dict[folder_name])
         elif option == School.SCHOOL_ENROLLMENTS:
             folder_name = 'school_enrollments'
             if no_of_files == -1:
                 no_of_files = self.get_file_count(folder_name)
-                self.load_files(no_of_files,folder_name,self.folder_dict[folder_name])
+            self.load_files(no_of_files,folder_name,self.folder_dict[folder_name])
         elif option == School.SCHOOL_INFRA:
             folder_name = 'school_infra'
             if no_of_files == -1:
                 no_of_files = self.get_file_count(folder_name)
-                self.load_files(no_of_files,folder_name,self.folder_dict[folder_name])
+            self.load_files(no_of_files,folder_name,self.folder_dict[folder_name])
         else:
             self.copy_all_data()
         print("Copying data to dbfs succeeded")
@@ -89,8 +89,8 @@ class LoadData:
 
 # COMMAND ----------
 
-if __name__ == "__main__":
-    LoadData().copy_data_to_dbfs()
+if __name__=='__main__':
+    LoadData('Users').copy_data_to_dbfs()
 
 # COMMAND ----------
 
