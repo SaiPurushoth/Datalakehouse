@@ -22,11 +22,12 @@ class SilverLayerData:
         return (
             df.drop(column_name)
         )
-    def write_data_to_silver(self,df,table_name):
+    def write_data_to_silver(self,df,table_name,partition_column_name = 'district_name'):
         return (df.writeStream
                 .option("checkpointLocation", f'{self.checkpoint_location}/{table_name}')
                 .outputMode("append")
                 .trigger(once=True)
+                .partitionBy(partition_column_name)
                 .table(f'{table_name}') 
                 )
         
@@ -65,6 +66,7 @@ class SilverLayerData:
 # COMMAND ----------
 
 if __name__ == "__main__":
+    SilverLayerData().cleanup_checkpoint()
     SilverLayerData().clean_school_enrollment()
     SilverLayerData().clean_school_infra()
     SilverLayerData().clean_teacher_details()
